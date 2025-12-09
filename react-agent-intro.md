@@ -1,5 +1,13 @@
 # AIAgent系列-1 什么是 ReAct Agent？
 
+## 关于这个系列
+
+作为 Lynxe(原JManus的作者），我花费了很多课余时间来完善我的这个Func-Agent框架，也因此对于什么是ReAct Based Agent 有了更深一些的理解。
+
+所以想把这些内容总结出来，方便大家快速入门。
+
+你可以访问 Lynxe(菱科斯) https://github.com/spring-ai-alibaba/Lynxe 阅读详细源码来学习agent的一些最佳实践。这是一个非常完善的产品级的 Func-Agent框架。
+
 ReAct 这个名字听起来挺高大上，其实拆开看就明白了：Reasoning（推理）+ Acting（行动）。说白了，就是让 AI 一边想一边做，而不是想完了再做。
 
 ## 核心思想：观察-思考-行动
@@ -40,7 +48,7 @@ ReAct 的实现其实离不开几个关键要素：
 **1. 历史上下文（History）**
 ReAct 会维护一个对话历史，记录之前所有的思考、行动和观察。这样 LLM 在做决策时，可以参考之前发生了什么，避免重复操作或者走错路。
 
-**2. 当前环境信息（Current Environment Information）**
+**2. 观察当前环境信息（Current Environment Information）**
 这是 Agent 在当前时刻接收到的外部信息，比如用户的输入、系统的状态、或者其他需要处理的数据。这些信息会作为 LLM 推理的输入，帮助决定下一步该做什么。
 
 **3. 语言模型（LLM Thinking）**
