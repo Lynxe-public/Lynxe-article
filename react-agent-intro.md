@@ -8,6 +8,8 @@
 
 你可以访问 Lynxe(菱科斯) https://github.com/spring-ai-alibaba/Lynxe 阅读详细源码来学习agent的一些最佳实践。这是一个非常完善的产品级的 Func-Agent框架。
 
+
+## 正文开始
 ReAct 这个名字听起来挺高大上，其实拆开看就明白了：Reasoning（推理）+ Acting（行动）。说白了，就是让 AI 一边想一边做，而不是想完了再做。
 
 ## 核心思想：观察-思考-行动
