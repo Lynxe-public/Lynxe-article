@@ -1,13 +1,21 @@
-# AIAgent系列-1 什么是 ReAct Agent？
+# AI Agent系列 - 1 什么是 ReAct Agent？
 
 ## 关于这个系列
 
-作为 Lynxe(原JManus的作者），我花费了很多课余时间来完善我的这个Func-Agent框架，也因此对于什么是ReAct Based Agent 有了更深一些的理解。
+作为 Lynxe(原JManus）的作者，我花费了很多课余时间来完善这个Func-Agent框架，也因此对于什么是ReAct Based Agent 有了更深一些的理解。
 
-所以想把这些内容总结出来，方便大家快速入门。
+所以想把这些内容总结出来，是因为这个项目本身核心目的就是探索Agent的前沿最佳实践，目前已经有所小成，Lynxe能解决我自己面对的80%以上的问题了，所以我觉得值得把我实验下来有效的东西写出来，方便大家快速入门。
 
-你可以访问 Lynxe(菱科斯) https://github.com/spring-ai-alibaba/Lynxe 阅读详细源码来学习agent的一些最佳实践。这是一个非常完善的产品级的 Func-Agent框架。
+你可以访问 [Lynxe(菱科斯)](https://github.com/spring-ai-alibaba/Lynxe) 阅读详细源码来学习agent的一些最佳实践。这是一个非常完善的产品级的 Func-Agent框架。
 
+## 系列计划
+
+* 什么是 ReAct Agent？ 
+* Agent 与传统的写流程对比，有哪些本质不同？
+* 工具toolcall/mcp管理的最佳实践
+* 上下文管理的一些实践
+* 并行执行的最佳实践与我走过的弯路
+* 其余 想到或得到反馈在写 
 
 ## 正文开始
 ReAct 这个名字听起来挺高大上，其实拆开看就明白了：Reasoning（推理）+ Acting（行动）。说白了，就是让 AI 一边想一边做，而不是想完了再做。
