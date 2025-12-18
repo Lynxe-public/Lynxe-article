@@ -10,8 +10,8 @@ You can visit [Lynxe (/lɪŋks/)](https://github.com/spring-ai-alibaba/Lynxe) to
 
 ## Series Plan
 
-* What is a ReAct Agent?
-* How do Agents differ fundamentally from traditional workflow writing?
+* [What is a ReAct Agent?](./react-agent-intro.md)
+* [How do Agents differ fundamentally from traditional workflow writing?](./react-agent-vs-traditional.md)
 * Best practices for tool/toolcall/MCP management
 * Some practices for context management
 * Best practices for parallel execution and the pitfalls I've encountered
