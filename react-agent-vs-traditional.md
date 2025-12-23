@@ -1,4 +1,4 @@
-# AI Agent系列 - 2 ReAct Agent 与传统的写流程对比，有哪些本质不同？
+# 深入了解智能体工作流核心：Agent vs 传统编程 vs Workflow 的本质区别
 
 ## 关于这个系列
 
@@ -11,7 +11,7 @@
 ## 系列计划
 
 * [什么是 ReAct Agent？](./react-agent-intro.md)
-* [Agent 与传统的写流程对比，有哪些本质不同？](./react-agent-vs-traditional.md)
+* [深入了解智能体工作流核心：Agent vs 传统编程 vs Workflow 的本质区别](./react-agent-vs-traditional.md)
 * 工具toolcall/mcp管理的最佳实践
 * 上下文管理的一些实践
 * 并行执行的最佳实践与我走过的弯路
