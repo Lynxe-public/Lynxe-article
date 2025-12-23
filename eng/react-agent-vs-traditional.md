@@ -21,6 +21,10 @@ You can visit [Lynxe (/lɪŋks/)](https://github.com/spring-ai-alibaba/Lynxe) to
 
 In the previous article, we introduced what a ReAct Agent is. Now let's discuss a more practical question: What are the fundamental differences between Agents and traditional programming/workflow approaches? Why do we need Agents?
 
+**One-sentence summary:**
+Traditional programming and Workflow both involve humans making decisions and designing all logic in advance, while Agents have AI making decisions and can solve problems that traditional programming cannot, making it easier to create differentiated experiences. Therefore, Agents are more suitable as a new paradigm for next-generation user interaction.
+Just like the coding agents everyone is using now, there will be more agents emerging in the future targeting different domains.
+
 ## Comparison of Three Approaches
 
 Let's start with an intuitive comparison table:
@@ -118,70 +122,7 @@ The most fundamental difference between these three approaches is: **Who makes t
 - **Workflow**: Product/Development makes decisions, designing fixed process paths
 - **Agent**: AI makes decisions, dynamically adjusting strategies based on actual conditions
 
-## Skill Requirements: From Professional to Natural Language
-
-### Traditional Programming
-Need to master:
-- Programming languages (Python, Java, JavaScript, etc.)
-- Algorithms and data structures
-- System design
-- Debugging and testing
-- Version control
-
-High threshold, requires professional training.
-
-### Workflow
-Need to master:
-- Understand basic programming principles (variables, conditionals, loops, etc.)
-- Ability to use graphical tools to drag and drop nodes
-- Ability to write some extension functions (if needed)
-
-Medium threshold, requires some technical understanding.
-
-### Agent
-Need to master:
-- **Natural language**: Just need to be able to describe requirements in Chinese or English
-
-Very low threshold, anyone can use it.
-
-## Modification and Maintenance Costs: From Waterfall to Closed Loop
-
-### Traditional Programming Collaboration Process
-
-```
-Operations discovers problem 
-  -> Product breaks down requirements and schedules 
-    -> Development writes code 
-      -> Testing and validation 
-        -> Deployment and launch 
-          -> Operations validation
-```
-
-The entire process may take days or even weeks, involving multiple roles with high communication costs.
-
-### Workflow Collaboration Process
-
-```
-Operations discovers problem 
-  -> Product breaks down requirements and schedules 
-    -> Development adjusts process 
-      -> Testing and validation 
-        -> Launch (deployment step may be automated)
-```
-
-Better than traditional programming, but still requires multiple roles to collaborate.
-
-### Agent Collaboration Process
-
-```
-Operations discovers problem 
-  -> Operations directly describes requirements to Agent in natural language 
-    -> Agent automatically completes 
-      -> Operations tests and validates 
-        -> If incorrect, continues to adjust using natural language
-```
-
-**Business self-closed loop**—no need for product, development, testing, deployment, and other steps. From discovering a problem to solving it may only take a few minutes.
+Because the decision-makers are different, the skill requirements are also different: Traditional programming requires mastering programming languages, algorithms, system design, and other professional knowledge with a high threshold; Workflow requires understanding programming principles and graphical tools with a medium threshold; while Agents only need to be able to describe requirements in natural language—obviously, Agents greatly lower the threshold. At the same time, this also brings huge differences in modification and maintenance costs: Traditional programming requires multi-role waterfall collaboration (days to weeks), Workflow can only save the deployment step, while Agents can achieve business self-closed loops, taking only minutes from discovering a problem to solving it.
 
 ## Real-World Scenario Comparison
 
@@ -208,7 +149,7 @@ Requires:
 3. Write some extension functions to handle complex logic
 4. Testing and launch
 
-May require: 3-5 days, needs technical personnel participation.
+May require: 1~3 days, needs technical personnel participation.
 
 ### Agent Approach
 
@@ -241,13 +182,16 @@ Although Agents seem very powerful, not all scenarios are suitable for Agents. E
 
 ## Summary
 
-The fundamental differences between Agents and traditional programming/Workflow are:
+Overall, we believe that Agents are a new application paradigm that is more future-oriented and worth exploring and trying.
 
-1. **Different decision-makers**: Agents have AI making decisions, rather than humans designing all logic in advance
-2. **Different flexibility**: Agents can dynamically adjust based on actual conditions, rather than following fixed paths
-3. **Different thresholds**: Agents only require natural language, greatly lowering the usage threshold
-4. **Different iteration speed**: Agents can achieve business self-closed loops, taking only minutes from discovering a problem to solving it
+There's an important insight here: Workflow and traditional programming models are actually mutually substitutable relationships, and this competitive substitution relationship has already been fully competed in the era without AI. The result is that programming became the preferred choice because of its excellent reusability and extensibility. This is also why Workflow, despite lowering the usage threshold, never became mainstream.
 
-Of course, Agents are not a panacea. They are suitable for handling complex, uncertain tasks, but for scenarios requiring precise control and high performance, traditional programming is still a better choice.
+Agent's approach is completely different. Its decision-making power is completely delegated to the Agent and Prompt, enabling it to solve problems that traditional programming cannot—such as handling uncertainty, dynamically adjusting strategies, understanding natural language intentions, etc. Therefore, Agents are not a simple replacement for traditional programming, but a new paradigm with more opportunities.
 
-The key is to understand the essence of each approach and choose the most appropriate one based on actual scenarios. In many scenarios, Agents can greatly improve efficiency, allowing non-technical personnel to complete complex tasks—this is the core value of Agents.
+From an application scenario perspective:
+
+- **If you want to enhance AI capabilities in existing systems**, you can use code + toolcall, which provides the best results and guaranteed accuracy. This approach is suitable for scenarios requiring precise control and high performance.
+
+- **If you want users to clearly feel this is an AI-driven innovative product**, then using AI Agents is a better choice. This approach is suitable for scenarios requiring handling uncertainty, rapid iteration, and enabling non-technical personnel to complete complex tasks.
+
+The key is to understand the essence of each approach and choose the most appropriate one based on actual scenarios. The core value of Agents lies in opening up new possibilities, making AI a true decision-maker, not just an executor.
