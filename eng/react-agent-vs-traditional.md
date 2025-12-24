@@ -184,7 +184,9 @@ Although Agents seem very powerful, not all scenarios are suitable for Agents. E
 
 Overall, we believe that Agents are a new application paradigm that is more future-oriented and worth exploring and trying.
 
-There's an important insight here: Workflow and traditional programming models are actually mutually substitutable relationships, and this competitive substitution relationship has already been fully competed in the era without AI. The result is that programming became the preferred choice because of its excellent reusability and extensibility. This is also why Workflow, despite lowering the usage threshold, never became mainstream.
+The main reason is very simple: **Agents can deliver a more obvious "new experience," making them easier for end users to perceive.**
+
+Workflow and traditional programming models—the core change in both is merely adding AI capabilities appropriately within fixed processes. Beyond this difference, other aspects are similar. Therefore, both are essentially program-controlled process flows, and they are actually mutually substitutable relationships. This competitive substitution relationship has already been fully competed in the era without AI. The result is that the code-writing approach became the mainstream choice because of its excellent reusability and extensibility.
 
 Agent's approach is completely different. Its decision-making power is completely delegated to the Agent and Prompt, enabling it to solve problems that traditional programming cannot—such as handling uncertainty, dynamically adjusting strategies, understanding natural language intentions, etc. Therefore, Agents are not a simple replacement for traditional programming, but a new paradigm with more opportunities.
 
