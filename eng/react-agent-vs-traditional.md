@@ -12,7 +12,7 @@ You can visit [Lynxe (/lɪŋks/)](https://github.com/spring-ai-alibaba/Lynxe) to
 
 * [What is a ReAct Agent?](./react-agent-intro.md)
 * [Deep Understanding of Agent Workflow Core: Fundamental Differences Between Agent vs Traditional Programming vs Workflow](./react-agent-vs-traditional.md)
-* Differences and connections between function calling/MCP/skill
+* Deep Analysis of Function Calling, MCP, and Skills: Essential Differences and Best Practices
 * Some practices for context management
 * Best practices for parallel execution and the pitfalls I've encountered
 * Others (to be written as ideas come up or feedback is received)

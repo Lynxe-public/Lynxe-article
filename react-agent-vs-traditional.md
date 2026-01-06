@@ -12,7 +12,7 @@
 
 * [什么是 ReAct Agent？](./react-agent-intro.md)
 * [深入了解智能体工作流核心：Agent vs 传统编程 vs Workflow 的本质区别](./react-agent-vs-traditional.md)
-* 工具function calling/mcp/skill的区别与联系
+* 深入解析Function Calling、MCP和Skills的本质差异与最佳实践
 * 上下文管理的一些实践
 * 并行执行的最佳实践与我走过的弯路
 * 其余 想到或得到反馈在写 
