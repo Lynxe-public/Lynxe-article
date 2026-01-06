@@ -12,7 +12,7 @@
 
 * [什么是 ReAct Agent？](./react-agent-intro.md)
 * [Agent 与传统的写流程对比，有哪些本质不同？](./react-agent-vs-traditional.md)
-* 工具toolcall/mcp管理的最佳实践
+* 工具function calling/mcp/skill的区别与联系
 * 上下文管理的一些实践
 * 并行执行的最佳实践与我走过的弯路
 * 其余 想到或得到反馈在写 
