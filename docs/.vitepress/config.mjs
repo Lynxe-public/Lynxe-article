@@ -12,11 +12,11 @@ export default defineConfig({
     ['meta', { property: 'og:title', content: 'AI Agent Articles' }],
     ['meta', { property: 'og:description', content: 'Exploring ReAct Agent, Function Calling, MCP, and Skills' }],
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
-    ['link', { rel: 'canonical', href: 'https://Lynxe-public.github.io/Lynxe-article/' }]
+    ['link', { rel: 'canonical', href: 'https://lynxe.cc/' }]
   ],
 
-  // Base URL for GitHub Pages
-  base: '/Lynxe-article/',
+  // Base URL for custom domain
+  base: '/',
 
   // Language
   lang: 'en-US',
