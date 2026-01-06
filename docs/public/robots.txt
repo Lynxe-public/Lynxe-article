@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://Lynxe-public.github.io/Lynxe-article/sitemap.xml
+
