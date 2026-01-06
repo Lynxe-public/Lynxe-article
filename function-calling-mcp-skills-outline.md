@@ -29,67 +29,7 @@
 
 * **MCP (Model Context Protocol)**：由 Anthropic 推动的开放标准，为 LLM 应用提供标准化接口以连接和交互外部数据源和工具，现已捐赠给linux基金会。
 
-* **Skills**：Claude的一个新的尝试，可以允许用户更细致的用文字定义指令、脚本和资源，跟MCP有竞合关系，我们后面会从不同角度来阐述这个竞合关系（虽然很多人认为是互补，但实际上，这两个是竞争关系更大一些）
-
-
-## 为什么需要这些技术：理解工具调用的基础
-
-### AI Agent工具调用的基本流程
-
-### 为什么需要这些技术
-
-## Function Calling、MCP、Skills的核心定位
-
-### Function Calling：是什么
-
-### MCP (Model Context Protocol)：是什么
-
-### Skills (Claude Skills)：是什么
-
-## 三者的本质差异对比
-
-### 对比表格（定位、协议层、实现方式、适用场景等维度）
-
-
-
-## 三者的联系与演进关系
-
-## Lynxe的实践与总结
-
-
-
-# 深入解析Function Calling、MCP和Skills的本质差异与最佳实践
-
-## 关于这个系列
-
-作为 Lynxe(原JManus）的作者，我花费了很多课余时间来完善这个Func-Agent框架，也因此对于什么是ReAct Based Agent 有了更深一些的理解。
-
-所以想把这些内容总结出来，是因为这个项目本身核心目的就是探索Agent的前沿最佳实践，目前已经有所小成，Lynxe能解决我自己面对的80%以上的问题了，所以我觉得值得把我实验下来有效的东西写出来，方便大家快速入门。
-
-你可以访问 [Lynxe(菱科斯)](https://github.com/spring-ai-alibaba/Lynxe) 阅读详细源码来学习agent的一些最佳实践。这是一个非常完善的产品级的 Func-Agent框架。
-
-## 系列计划
-
-* [什么是 ReAct Agent？](./react-agent-intro.md)
-* [Agent 与传统的写流程对比，有哪些本质不同？](./react-agent-vs-traditional.md)
-* 深入解析Function Calling、MCP和Skills的本质差异与最佳实践
-* 上下文管理的一些实践
-* 并行执行的最佳实践与我走过的弯路
-* 其余 想到或得到反馈在写 
-
-## 正文开始
-
-在前面的文章中，我们介绍了什么是 ReAct Agent，以及 Agent 与传统编程、Workflow 的本质区别。
-
-现在我们来聊聊一个大家广为谈论的话题：AI Agent 的工具能力是什么？Function Calling、MCP 和 Skills 这三者有什么区别？它们背后的核心原理是什么？
-
-## 一句话总结
-
-* **Function Calling**：AI Agent 调用工具的基础能力，也是后面两个能够存在的基础。
-
-* **MCP (Model Context Protocol)**：由 Anthropic 推动的开放标准，为 LLM 应用提供标准化接口以连接和交互外部数据源和工具，现已捐赠给linux基金会。
-
-* **Skills**：Claude的一个新的尝试，可以允许用户更细致的用文字定义指令、脚本和资源，跟MCP有竞合关系，我们后面会从不同角度来阐述这个竞合关系（虽然很多人认为是互补，但实际上，这两个是竞争关系更大一些）
+* **Skills**：Anthropic Claude的一个新的尝试，可以允许用户更细致的用文字定义指令、脚本和资源，跟MCP有竞合关系，我们后面会从不同角度来阐述这个竞合关系（虽然很多人认为是互补，但实际上，这两个是竞争关系更大一些）
 
 
 ## 为什么需要这些技术：理解工具调用的基础
@@ -238,36 +178,80 @@ LLM <- Function Calling结果 <- MCP Client <- JSON响应 <- MCP Server <- 既�
 
 这就是Skills产生的原因（其实也是Lynxe的Func-Agent产生的核心原因）：提供一个方式，让用户可以用文字定义指令、脚本和资源，形成可复用的任务流程。
 
-Skills的核心其实也是基于Function Calling的。它做的事情很巧妙：通过一个固化的函数和参数，让模型去查找和加载固定的skills文档。用户用文字定义的指令、脚本和资源被打包成Skills（包含SKILL.md和可选的脚本、参考资料等），Claude在启动时会读取所有Skills的元数据（名称和描述），当用户请求与某个Skill的描述匹配时，Claude会通过Function Calling调用查找函数，自动加载对应的SKILL.md文档，然后按照文档中的指令执行任务。
+Skills的核心其实也是基于Function Calling的。它做的事情很巧妙：通过一个固化的函数和参数，让模型去查找和加载固定的skills文档。
 
-这个过程采用了"渐进式披露"机制：首先只加载元数据（约100 token），支持发现而不消耗太多上下文；当判定Skill相关时，才加载SKILL.md主体（控制在500行以内）；最后按需加载脚本和参考资料。这样既能让Claude自动发现相关Skills，又能高效管理上下文。
+**这里的关键是，Skills完全依赖于Function Calling这个基础能力。** 如果没有Function Calling，Skills就无法工作。Skills只是在Function Calling之上的一个巧妙应用：把"加载文档"这个操作封装成一个函数，然后让Claude在需要时自动调用。
+
+具体工作流程是这样的：
+
+1. **初始化阶段**：用户用文字定义指令、脚本和资源，打包成Skills（包含SKILL.md和可选的脚本、参考资料等）。Claude在启动时会读取所有Skills的元数据（名称和描述），这些元数据被加载到模型的上下文中（每个约100 token）。
+
+2. **发现阶段**：当用户发起请求时，Claude会根据请求内容，对比已加载的Skills元数据，判断是否需要使用某个Skill。这个判断过程本质上就是LLM根据上下文做决策，跟Function Calling中判断是否需要调用工具是一样的。
+
+3. **加载阶段（Function Calling）**：如果Claude判断需要某个Skill，它会**通过Function Calling机制**调用一个专门的加载函数（类似`load_skill(skill_name)`），将对应的SKILL.md文档内容读取并加载到当前上下文中。这一步完全依赖Function Calling的能力。
+
+4. **执行阶段（继续使用Function Calling）**：SKILL.md的内容（包含指令、流程、示例等）被加入到上下文后，Claude按照文档中定义的指令执行任务。如果SKILL.md中定义了需要执行脚本（比如`scripts/rotate_pdf.py`），Claude还是会**通过Function Calling**调用执行脚本的函数。如果需要加载参考资料，同样是**通过Function Calling**调用读取文件的函数。
+
+可以看到，**整个Skills的运行过程，从加载文档、执行脚本到读取资源，每一步都离不开Function Calling**。Skills并没有创造新的能力，它只是把Function Calling这个基础能力组织成了一个更易用的形式：让用户可以用文字定义流程，让Claude自动发现和加载相关知识。 从本质来说，他替代的是mcp 调用的函数里面，过去可能会用代码写的一套串接各种API的逻辑流程，用这种方式，可以增强流程的适应性，其实也是呼应了我们第二篇文章的核心观点：Agent将决策权完全下放给了 Agent 和 Prompt，能够解决原有写程序不能解决的问题——比如处理不确定性、动态调整策略、理解自然语言意图等。
 
 ```
-用户定义Skills（SKILL.md + 脚本+资源） -> Skills元数据（始终加载） -> 模型自动发现
-                                                              ↓
-用户请求匹配 -> Function Calling调用查找函数 -> 加载SKILL.md -> LLM按指令执行任务
-                                                              ↓
-用户获得结果 <- LLM返回结果 <- 按需加载脚本/资源 <- 执行Skills定义的流程
+
+[初始化]
+用户定义Skills（SKILL.md + 脚本 + 资源） -> 打包成.skill文件 -> Claude启动时加载所有Skills元数据到上下文
+
+[运行时]
+用户发起请求 -> Claude判断是否需要Skill（skills 对暴露description 和skill_name）
+                              ↓ (需要)
+          Function Calling: 调用load_skill(skill_name) -> 将SKILL.md加载到上下文
+                              ↓
+          Claude按照SKILL.md中的指令执行任务
+                              ↓
+          Function Calling: 调用bash执行脚本 / 调用read_file读取资源 -> 完成任务
+                              ↓
+                         返回结果给用户
 ```
-
-
-
 
 ## Function Calling、MCP、Skills的核心定位
 
-### Function Calling：是什么
+通过前面的分析，我们可以看到Function Calling、MCP和Skills三者之间的本质关系：**MCP和Skills都是基于Function Calling的，它们只是在Function Calling这个基础能力之上的不同应用方式。**
 
-### MCP (Model Context Protocol)：是什么
+**MCP的核心是解决与既有系统的接驳问题** ： 实际上，与外部系统接驳的方法并不只有MCP这一种——我们完全可以用curl、bash等传统方式来与程序接驳。MCP的价值在于它提供了一套标准化的接驳协议，让不同的工具和数据源能够以统一的方式被LLM使用。通过JSON-RPC协议和标准化的工具描述格式，MCP降低了工具集成的成本，让开发者不需要为每个系统单独编写集成代码。但本质上，MCP更偏重是一套接驳标准，而不是唯一的接驳方式。
 
-### Skills (Claude Skills)：是什么
+**Skills则实际上是一个sub-agent的包装** ： 它让用户可以用文字来写流程，替代了过去在MCP调用的函数里用代码写的一套串接各种API的逻辑流程。这种方式可以增强流程的环境适应性——因为模型可以根据实际情况动态调整策略，处理不确定性，理解自然语言意图。这正是我们第二篇文章提到的核心观点：Agent将决策权完全下放给了模型和Prompt，能够解决原有写程序不能解决的问题。但代价就是不可能100%准确，因为模型的行为存在不确定性，无法像传统代码那样保证完全可预测的执行结果。
 
-## 三者的本质差异对比
+从本质来说，Function Calling是基础能力，MCP是在这个基础上提供标准化接驳方案，而Skills是在这个基础上提供文字化流程定义方案。三者共同构成了AI Agent工具能力的完整体系。
 
-### 对比表格（定位、协议层、实现方式、适用场景等维度）
+## 三者的总结性对比表
 
-
-
-## 三者的联系与演进关系
+| 维度 | Function Calling | MCP (Model Context Protocol) | Skills (Claude Skills) |
+|------|------------------|-------------------------------|------------------------|
+| **定位/本质** | AI Agent调用工具的基础能力，将非结构化需求转换为结构化函数调用 | 标准化接驳协议，提供统一的方式让LLM与外部系统交互 | sub-agent的包装，让用户用文字定义可复用的任务流程 |
+| **解决的问题** | 将用户的非结构化需求（自然语言）转换为结构化的函数调用（函数名和参数），实现LLM与外部系统的交互桥梁 | 工具集成成本高：每个既有系统都需要单独集成，每个组织都有自己的API、认证方式、数据格式 | 任务流程定义困难：需要特定执行顺序、规则和约束，但写成代码会丧失模型灵活性优势 |
+| **实现方式** | LLM生成结构化的JSON格式输出（`tool_calls`字段包含`function.name`和`function.arguments`），系统解析并执行对应函数 | 基于Function Calling，将调用转换为JSON-RPC协议和HTTP请求；采用MCP Client/Server架构，通过标准化的工具描述格式（JSON Schema）定义工具 | 基于Function Calling，通过固化函数`load_skill()`查找和加载SKILL.md文档；采用渐进式披露机制（元数据→SKILL.md→资源），支持自动发现和按需加载 |
+| **适用场景** | 所有工具调用的基础，任何需要LLM调用外部功能的场景 | 与既有系统接驳：GitHub、Slack、数据库、文件系统、各种API服务等需要统一接入的场景 | 需要特定流程和规则的任务：代码审查、部署流程、文档格式化、合规性检查等需要文字化流程定义的场景 |
+| **替代方案** | 可以要求模型用固定格式输出替代，但因为模型对func-call做过很多优化，实际遵循程度来说FC还是目前最优解 | 可以用curl、bash调用等传统方式与调用既有程序，MCP更偏重是一套接驳标准而非唯一方式（这也是目前的实践，用bash掉python/java/ts其实比mcp更简单） | 可以用代码替代（在MCP调用的函数里写代码串接各种API），但会失去处理不确定性、动态调整策略的能力 |
 
 ## Lynxe的实践与总结
+
+首先，我们也认为Agent这种将决策委托给LLM的方式，是一种更有潜力的、能够提供完全不同体验的、面向未来的方案。通过Function Calling、MCP和Skills这些技术，我们看到了AI Agent工具能力的完整体系正在形成。
+
+但我们也并不认为Skills就是终局。在Lynxe的开发实践中，我们发现Skills仍然有两个核心问题没有解决：
+
+**1. Skills的需求描述部分不够结构化**
+
+Skills仅仅通过`description`字段来描述sub-agent的要求，这会导致模型生成的信息非常容易不准确，从而导致sub-agent（也就是Skill）无法获得充分的信息，最终导致sub-agent无法达成用户期望。当任务复杂度增加时，纯文本描述的不确定性会放大，模型可能误解需求，或者遗漏关键信息。
+
+**2. Agent无法与既有的系统接驳**
+
+Agent仅仅只能通过聊天的方式与既有系统接驳，这种方式最后无论怎么做，都只能是个对话框。但真实的系统，远远不止有对话框这一种输入的方式。我们的大量表单都不是只有一个textarea的。现有的Agent方案很难集成到复杂的业务系统中，比如需要多步骤表单、需要实时数据展示、需要与现有UI组件交互的场景。
+
+这就是Lynxe这套Func-Agent思路的原因。如果一句话来表达，就是：**一切都是函数，函数才是第一公民**。
+
+在Lynxe的设计中，我们让每个Agent能力都通过函数的方式暴露，这样就能更好地把Agent集成到既有的系统中，让他不再仅仅是一个对话框。通过函数化的接口，Lynxe的Func-Agent可以：
+- 接收结构化的参数输入，而不是依赖纯文本描述
+- 返回结构化的结果，方便与现有系统集成
+- 支持多种调用方式，不仅仅是聊天界面
+- 与现有的业务逻辑、表单、API无缝对接
+
+这种方式既保留了Agent处理不确定性的核心优势，又解决了结构化输入输出和系统集成的问题，为Agent在实际业务场景中的应用提供了更可行的路径。
 
