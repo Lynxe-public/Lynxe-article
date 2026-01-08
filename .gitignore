@@ -6,3 +6,6 @@ dist
 # VitePress cache
 docs/.vitepress/cache/
 docs/.vitepress/dist/
+ata.md
+业务背景与痛点.md
+function-calling-mcp-skills-outline-csdn-*.md
